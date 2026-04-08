@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>Roguelike</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script type="module" crossorigin src="./assets/index-BOt2eTGm.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-b35rTg6e.css">
+</head>
+<body>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- HUD -->
+  <div id="ui" style="display:none">
+    <div id="hud-top">
+      <div class="coin-display"><div class="coin-icon"></div><span id="coins">0</span></div>
+      <div id="timer">0:00</div>
+      <div class="skull-display">💀 <span id="killCount">0</span></div>
+    </div>
+    <div id="xpBarWrap"><div id="xpBar"></div></div>
+    <div id="hp-bar-wrap">
+      <div id="hp-bar"></div>
+      <span id="hp-bar-lvl">Lv.1</span>
+    </div>
+  </div>
+
+  <!-- Joystick -->
+  <div id="joystick-area" style="display:none">
+    <div id="joystick-base">
+      <div id="joystick-thumb"></div>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="mainMenu">
+    <h2>⚔️ ROGUELIKE</h2>
+    <p>Survive as long as possible.<br>Defeat enemies, collect coins, level up!</p>
+    <button id="startBtn">▶ PLAY</button>
+    <div class="menu-row">
+      <button id="shopBtn">🛒 SHOP</button>
+      <button id="leaderboardBtn">🏆 LEADERBOARD</button>
+    </div>
+  </div>
+
+  <!-- Shop stub -->
+  <div id="shopScreen" style="display:none">
+    <h2>🛒 SHOP</h2>
+    <p class="stub-text">Coming soon!<br>Spend your coins on permanent upgrades.</p>
+    <button class="back-btn" id="shopBackBtn">← BACK</button>
+  </div>
+
+  <!-- Leaderboard stub -->
+  <div id="leaderboardScreen" style="display:none">
+    <h2>🏆 LEADERBOARD</h2>
+    <p class="stub-text">Coming soon!<br>Compete with other players.</p>
+    <button class="back-btn" id="lbBackBtn">← BACK</button>
+  </div>
+
+  <!-- Death screen -->
+  <div id="deathScreen" style="display:none">
+    <h2>💀 YOU DIED</h2>
+    <div id="deathStats"></div>
+    <button id="retryBtn" class="btn-danger">↺ TRY AGAIN</button>
+    <button id="deathMenuBtn" class="btn-ghost">⌂ MAIN MENU</button>
+  </div>
+
+  <!-- Pause screen -->
+  <div id="pauseScreen" style="display:none">
+    <h2>⏸ PAUSED</h2>
+    <button id="resumeBtn">▶ RESUME</button>
+    <button id="pauseMenuBtn" class="btn-ghost">⌂ MAIN MENU</button>
+  </div>
+
+  <!-- Post level-up countdown -->
+  <div id="countdownScreen" style="display:none">
+    <div id="countdownNum">3</div>
+  </div>
+
+  <!-- Level Up screen -->
+  <div id="levelUpScreen">
+    <h2>⬆ LEVEL UP!</h2>
+    <div id="upgradeCards"></div>
+  </div>
+
+  <!-- Pause button (in-game) -->
+  <button id="pauseBtn" style="display:none">⏸</button>
+
+</body>
+</html>
