@@ -3,22 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#1a1a2e" />
+  <meta name="theme-color" content="#0d1b3e" />
   <title>Roguelike</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script type="module" crossorigin src="./assets/index-6GCEj5tn.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DpTb6Njj.css">
+  <script type="module" crossorigin src="./assets/index-hTOzryn6.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cqp82Sc6.css">
 </head>
 <body>
 
   <canvas id="gameCanvas"></canvas>
 
-  <!-- HUD -->
+  <!-- ── IN-GAME HUD ─────────────────────────────── -->
   <div id="ui" style="display:none">
     <div id="hud-top">
-      <div class="coin-display"><div class="coin-icon" id="coin-icon"></div><span id="coins">0</span></div>
+      <div class="coin-display">
+        <div class="coin-icon" id="coin-icon"></div>
+        <span id="coins">0</span>
+      </div>
       <div id="timer">0:00</div>
-      <div class="skull-display"><span id="skull-icon" class="skull-emoji">💀</span><span id="killCount">0</span></div>
+      <div class="skull-display">
+        <span id="skull-icon" class="skull-emoji">💀</span>
+        <span id="killCount">0</span>
+      </div>
     </div>
     <div id="xpBarWrap"><div id="xpBar"></div></div>
     <div id="hp-bar-wrap">
@@ -27,66 +33,265 @@
     </div>
   </div>
 
-  <!-- Joystick -->
+  <!-- ── JOYSTICK ────────────────────────────────── -->
   <div id="joystick-area" style="display:none">
-    <div id="joystick-base">
-      <div id="joystick-thumb"></div>
+    <div id="joystick-base"><div id="joystick-thumb"></div></div>
+  </div>
+
+  <!-- ── PAUSE BUTTON ────────────────────────────── -->
+  <button id="pauseBtn" style="display:none">⏸</button>
+
+  <!-- ══════════════════════════════════════════════
+       MAIN MENU
+  ══════════════════════════════════════════════ -->
+  <div id="mainMenu" class="ui-screen">
+
+    <div class="menu-hero">
+      <div class="menu-logo">⚔️ ROGUELIKE</div>
+      <div class="menu-tagline">Survive. Slay. Level up.</div>
     </div>
-  </div>
 
-  <!-- Main Menu -->
-  <div id="mainMenu">
-    <h2>⚔️ ROGUELIKE</h2>
-    <p>Survive as long as possible.<br>Defeat enemies, collect coins, level up!</p>
-    <button id="startBtn">▶ PLAY</button>
-    <div class="menu-row">
-      <button id="shopBtn">🛒 SHOP</button>
-      <button id="leaderboardBtn">🏆 LEADERBOARD</button>
+    <div class="menu-body">
+      <!-- Best run stats -->
+      <div class="menu-stats-row">
+        <div class="menu-stat-card">
+          <div class="menu-stat-label">Best time</div>
+          <div class="menu-stat-value" id="stat-best-time">—</div>
+        </div>
+        <div class="menu-stat-card">
+          <div class="menu-stat-label">Best kills</div>
+          <div class="menu-stat-value" id="stat-best-kills">—</div>
+        </div>
+        <div class="menu-stat-card">
+          <div class="menu-stat-label">Coins</div>
+          <div class="menu-stat-value" id="stat-total-coins">0</div>
+        </div>
+      </div>
+
+      <!-- Play button -->
+      <button id="startBtn" class="btn-play">▶ &nbsp;PLAY</button>
+
+      <!-- Secondary buttons -->
+      <div class="menu-secondary-row">
+        <button id="shopBtn" class="btn-secondary">
+          <span class="btn-icon">🛒</span>
+          <span class="btn-label">SHOP</span>
+        </button>
+        <button id="leaderboardBtn" class="btn-secondary">
+          <span class="btn-icon">🏆</span>
+          <span class="btn-label">LEADERBOARD</span>
+        </button>
+      </div>
     </div>
+
   </div>
 
-  <!-- Shop stub -->
-  <div id="shopScreen" style="display:none">
-    <h2>🛒 SHOP</h2>
-    <p class="stub-text">Coming soon!<br>Spend your coins on permanent upgrades.</p>
-    <button class="back-btn" id="shopBackBtn">← BACK</button>
+  <!-- ══════════════════════════════════════════════
+       SHOP SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="shopScreen" class="ui-screen" style="display:none">
+
+    <div class="screen-title">
+      <button class="back-btn-top" id="shopBackBtn">◀</button>
+      <h1>🛒 SHOP</h1>
+      <p>Spend coins on permanent upgrades</p>
+    </div>
+
+    <!-- Balance -->
+    <div class="shop-balance">
+      <span id="shop-coin-icon">🪙</span>
+      <strong id="shopCoins">0</strong>
+      <span>coins available</span>
+    </div>
+
+    <!-- Upgrades section -->
+    <div class="shop-section-title">⚔️ Combat Upgrades</div>
+    <div class="shop-grid">
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">💥</div>
+        <div class="shop-item-name">Power Strike</div>
+        <div class="shop-item-desc">+15% damage permanently</div>
+        <div class="shop-item-price">🪙 300</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">⚡</div>
+        <div class="shop-item-name">Swift Hands</div>
+        <div class="shop-item-desc">−10% attack cooldown</div>
+        <div class="shop-item-price">🪙 250</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">🎯</div>
+        <div class="shop-item-name">Eagle Eye</div>
+        <div class="shop-item-desc">+80 attack range</div>
+        <div class="shop-item-price">🪙 200</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">🔮</div>
+        <div class="shop-item-name">Twin Orbs</div>
+        <div class="shop-item-desc">Start with 2 orbs</div>
+        <div class="shop-item-price">🪙 500</div>
+      </div>
+    </div>
+
+    <div class="shop-section-title" style="margin-top:8px">🛡️ Survival Upgrades</div>
+    <div class="shop-grid">
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">❤️</div>
+        <div class="shop-item-name">Iron Will</div>
+        <div class="shop-item-desc">+50 max HP</div>
+        <div class="shop-item-price">🪙 300</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">💨</div>
+        <div class="shop-item-name">Fleet Foot</div>
+        <div class="shop-item-desc">+15% move speed</div>
+        <div class="shop-item-price">🪙 200</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">🧲</div>
+        <div class="shop-item-name">Magnetism</div>
+        <div class="shop-item-desc">2× pickup attract range</div>
+        <div class="shop-item-price">🪙 350</div>
+      </div>
+      <div class="shop-item locked">
+        <span class="shop-item-lock">🔒</span>
+        <div class="shop-item-icon">🍖</div>
+        <div class="shop-item-name">Scavenger</div>
+        <div class="shop-item-desc">+50% heal pickup value</div>
+        <div class="shop-item-price">🪙 280</div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Leaderboard stub -->
-  <div id="leaderboardScreen" style="display:none">
-    <h2>🏆 LEADERBOARD</h2>
-    <p class="stub-text">Coming soon!<br>Compete with other players.</p>
-    <button class="back-btn" id="lbBackBtn">← BACK</button>
+  <!-- ══════════════════════════════════════════════
+       LEADERBOARD SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="leaderboardScreen" class="ui-screen" style="display:none">
+
+    <div class="screen-title">
+      <button class="back-btn-top" id="lbBackBtn">◀</button>
+      <h1>🏆 LEADERBOARD</h1>
+      <p>Top survivors this week</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="lb-tabs">
+      <button class="lb-tab active" id="lbTabGlobal">🌍 Global</button>
+      <button class="lb-tab" id="lbTabFriends">👥 Friends</button>
+      <button class="lb-tab" id="lbTabWeekly">📅 Weekly</button>
+    </div>
+
+    <!-- List -->
+    <div class="lb-list">
+      <div class="lb-row">
+        <div class="lb-rank gold">🥇</div>
+        <div class="lb-avatar">🧙</div>
+        <div class="lb-info">
+          <div class="lb-name">ShadowSlayer99</div>
+          <div class="lb-sub">⏱ 12:34 &nbsp;·&nbsp; 💀 847 kills</div>
+        </div>
+        <div class="lb-score">12:34</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank silver">🥈</div>
+        <div class="lb-avatar">⚔️</div>
+        <div class="lb-info">
+          <div class="lb-name">NightHunter</div>
+          <div class="lb-sub">⏱ 11:58 &nbsp;·&nbsp; 💀 791 kills</div>
+        </div>
+        <div class="lb-score">11:58</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank bronze">🥉</div>
+        <div class="lb-avatar">🐉</div>
+        <div class="lb-info">
+          <div class="lb-name">DragonFury</div>
+          <div class="lb-sub">⏱ 10:22 &nbsp;·&nbsp; 💀 703 kills</div>
+        </div>
+        <div class="lb-score">10:22</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">4</div>
+        <div class="lb-avatar">🗡️</div>
+        <div class="lb-info">
+          <div class="lb-name">VoidWalker</div>
+          <div class="lb-sub">⏱ 9:47 &nbsp;·&nbsp; 💀 654 kills</div>
+        </div>
+        <div class="lb-score">9:47</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">5</div>
+        <div class="lb-avatar">🔥</div>
+        <div class="lb-info">
+          <div class="lb-name">BlazeMaster</div>
+          <div class="lb-sub">⏱ 9:11 &nbsp;·&nbsp; 💀 612 kills</div>
+        </div>
+        <div class="lb-score">9:11</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">6</div>
+        <div class="lb-avatar">🌙</div>
+        <div class="lb-info">
+          <div class="lb-name">MoonStriker</div>
+          <div class="lb-sub">⏱ 8:39 &nbsp;·&nbsp; 💀 578 kills</div>
+        </div>
+        <div class="lb-score">8:39</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">7</div>
+        <div class="lb-avatar">🌊</div>
+        <div class="lb-info">
+          <div class="lb-name">TidalWave</div>
+          <div class="lb-sub">⏱ 8:05 &nbsp;·&nbsp; 💀 543 kills</div>
+        </div>
+        <div class="lb-score">8:05</div>
+      </div>
+    </div>
+
+    <!-- Your rank -->
+    <div class="lb-your-rank">
+      🏅 Your rank: <strong>#—</strong> &nbsp;·&nbsp; Best: <strong id="lb-best-time">—</strong>
+    </div>
+
   </div>
 
-  <!-- Death screen -->
-  <div id="deathScreen" style="display:none">
+  <!-- ══════════════════════════════════════════════
+       DEATH SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="deathScreen" class="ui-screen" style="display:none">
     <h2>💀 YOU DIED</h2>
     <div id="deathStats"></div>
-    <button id="retryBtn" class="btn-danger">↺ TRY AGAIN</button>
-    <button id="deathMenuBtn" class="btn-ghost">⌂ MAIN MENU</button>
+    <button id="retryBtn" class="btn-danger">↺ &nbsp;TRY AGAIN</button>
+    <button id="deathMenuBtn">⌂ &nbsp;MAIN MENU</button>
   </div>
 
-  <!-- Pause screen -->
-  <div id="pauseScreen" style="display:none">
+  <!-- ══════════════════════════════════════════════
+       PAUSE SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="pauseScreen" class="ui-screen" style="display:none">
     <h2>⏸ PAUSED</h2>
-    <button id="resumeBtn">▶ RESUME</button>
-    <button id="pauseMenuBtn" class="btn-ghost">⌂ MAIN MENU</button>
+    <button id="resumeBtn">▶ &nbsp;RESUME</button>
+    <button id="pauseMenuBtn">⌂ &nbsp;MAIN MENU</button>
   </div>
 
-  <!-- Post level-up countdown -->
+  <!-- ── Countdown ──────────────────────────────── -->
   <div id="countdownScreen" style="display:none">
-    <div id="countdownNum">3</div>
+    <div id="countdownNum">2</div>
   </div>
 
-  <!-- Level Up screen -->
-  <div id="levelUpScreen">
+  <!-- ── Level Up ───────────────────────────────── -->
+  <div id="levelUpScreen" style="display:none">
     <h2>⬆ LEVEL UP!</h2>
     <div id="upgradeCards"></div>
   </div>
-
-  <!-- Pause button (in-game) -->
-  <button id="pauseBtn" style="display:none">⏸</button>
 
 </body>
 </html>
